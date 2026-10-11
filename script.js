@@ -39,9 +39,9 @@ renderRecords();
 submitBtn.disabled = false;
 
 // --- Server upload configuration ---
-// Replace `UPLOAD_SERVER_URL` with your server URL (e.g. http://localhost:3000)
-// Set `UPLOAD_AUTH_TOKEN` to match the server's UPLOAD_AUTH_TOKEN (if configured).
-const UPLOAD_SERVER_URL = 'http://localhost:3000';
+// For monolith deployment, the app uploads to the same origin by default.
+// If you need a different host, set `UPLOAD_SERVER_URL` manually in the browser console or here.
+const UPLOAD_SERVER_URL = window.location.origin || 'http://localhost:3000';
 // For quick testing you can store the upload token in localStorage using the key 'UPLOAD_AUTH_TOKEN'
 // e.g. in browser console: localStorage.setItem('UPLOAD_AUTH_TOKEN', 'your_token_here')
 const UPLOAD_AUTH_TOKEN = localStorage.getItem('UPLOAD_AUTH_TOKEN') || ''; // set to the secret token from server .env (if used)
