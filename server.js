@@ -5,14 +5,13 @@ const path = require('path');
 const cloudinary = require('cloudinary').v2;
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = Number(process.env.PORT) || 3000;
 
 app.use(cors());
 app.use(express.json({ limit: '12mb' }));
 app.use(express.static(path.join(__dirname)));
 
 const { CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, UPLOAD_AUTH_TOKEN, REQUIRE_UPLOAD_AUTH } = process.env;
-
 const requireUploadAuth = REQUIRE_UPLOAD_AUTH === 'true';
 
 if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_API_KEY || !CLOUDINARY_API_SECRET) {
@@ -60,7 +59,18 @@ app.post('/upload', async (req, res) => {
   }
 });
 
-app.get('*', (req, res) => {
+app.get('/script.js', (req, res) => {
+  res.sendFile(path.join(__dirname, 'script.js'));
+});
+
+app.get('/style.css', (req, res) => {
+  res.sendFile(path.join(__dirname, 'style.css'));
+});
+
+app.get('*', (req, res, next) => {
+  if (req.path.includes('.')) {
+    return next();
+  }
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
