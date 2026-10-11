@@ -42,9 +42,12 @@ submitBtn.disabled = false;
 // For monolith deployment, the app uploads to the same origin by default.
 // If you need a different host, set `UPLOAD_SERVER_URL` manually in the browser console or here.
 const UPLOAD_SERVER_URL = window.location.origin || 'http://localhost:3000';
-// For quick testing you can store the upload token in localStorage using the key 'UPLOAD_AUTH_TOKEN'
-// e.g. in browser console: localStorage.setItem('UPLOAD_AUTH_TOKEN', 'your_token_here')
-const UPLOAD_AUTH_TOKEN = localStorage.getItem('UPLOAD_AUTH_TOKEN') || ''; // set to the secret token from server .env (if used)
+const storedUploadAuthToken = localStorage.getItem('UPLOAD_AUTH_TOKEN');
+const UPLOAD_AUTH_TOKEN = storedUploadAuthToken || '';
+
+if (!storedUploadAuthToken) {
+    console.info('UPLOAD_AUTH_TOKEN not set in localStorage; upload is allowed on same-origin monolith deployment.');
+}
 
 // Helpful warning when uploads are not configured
 if (!UPLOAD_SERVER_URL) {

@@ -11,7 +11,9 @@ app.use(cors());
 app.use(express.json({ limit: '12mb' }));
 app.use(express.static(path.join(__dirname)));
 
-const { CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, UPLOAD_AUTH_TOKEN } = process.env;
+const { CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, UPLOAD_AUTH_TOKEN, REQUIRE_UPLOAD_AUTH } = process.env;
+
+const requireUploadAuth = REQUIRE_UPLOAD_AUTH === 'true';
 
 if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_API_KEY || !CLOUDINARY_API_SECRET) {
   console.error('Missing Cloudinary env variables. Please set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET');
@@ -33,7 +35,7 @@ app.post('/upload', async (req, res) => {
       contentType: req.headers['content-type'] || null,
     });
 
-    if (UPLOAD_AUTH_TOKEN) {
+    if (requireUploadAuth && UPLOAD_AUTH_TOKEN) {
       const token = req.headers['x-upload-auth'] || req.headers['authorization'];
       if (!token || (token !== UPLOAD_AUTH_TOKEN && token !== `Bearer ${UPLOAD_AUTH_TOKEN}`)) {
         console.warn('[/upload] unauthorized attempt (token mismatch)');
