@@ -1,0 +1,16 @@
+/* Custom CSS Styles */
+.content-auto {
+    content-visibility: auto;
+}
+.card-shadow {
+    box-shadow: 0 10px 30px rgba(22, 93, 255, 0.1);
+}
+.gradient-bg {
+    background: linear-gradient(135deg, #165DFF 0%, #36CBCB 100%);
+}
+video, img {
+    transform: scaleX(-1); /* Mirror camera feed for natural selfie view */
+}
+.no-mirror {
+    transform: none;
+}

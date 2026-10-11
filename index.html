@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JustBrandIt - Visitor Management System</title>
+
+    <!-- External Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#36CBCB',
+                        dark: '#1E293B',
+                        light: '#F8FAFC'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS Styles -->
+    <style>
+        .content-auto {
+            content-visibility: auto;
+        }
+        .card-shadow {
+            box-shadow: 0 10px 30px rgba(22, 93, 255, 0.1);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #165DFF 0%, #36CBCB 100%);
+        }
+        video, img {
+            transform: scaleX(-1); /* Mirror camera feed for natural selfie view */
+        }
+        .no-mirror {
+            transform: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans text-dark min-h-screen">
+
+    <!-- Header -->
+    <header class="gradient-bg text-white py-6 shadow-lg">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                        <i class="fa fa-building-o text-xl"></i>
+                    </div>
+                    <h1 class="text-[clamp(1.2rem,3vw,1.8rem)] font-bold">JustBrandIt</h1>
+                </div>
+                <nav>
+                    <ul class="flex gap-6">
+                        <li><a href="#signin" class="hover:text-white/80 transition font-medium">Sign In</a></li>
+                        <li><a href="#records" class="hover:text-white/80 transition font-medium">Visitor Log</a></li>
+                        <li>
+                            <button id="adminToggleBtn" class="hover:text-white/80 transition font-medium bg-white/10 py-1 px-3 rounded">Admin</button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="py-12 md:py-20 bg-sky-50">
+        <div class="container mx-auto px-4 md:px-6 text-center">
+            <h2 class="text-[clamp(1.5rem,4vw,2.5rem)] font-bold text-dark mb-4">Visitor Management System</h2>
+            <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">Welcome to JustBrandIt. Please register your visit — capturing a photo is optional.</p>
+        </div>
+    </section>
+
+    <!-- Sign In & Camera Section -->
+    <section id="signin" class="py-16">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="max-w-5xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-8">
+                    
+                    <!-- Visitor Form -->
+                    <div class="bg-white rounded-2xl p-6 md:p-8 card-shadow">
+                        <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
+                            <i class="fa fa-pencil-square-o text-primary"></i> Visitor Sign In
+                        </h3>
+                        
+                        <form id="visitorForm" class="space-y-4">
+                            <div>
+                                <label for="fullname" class="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
+                                <input type="text" id="fullname" required 
+                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition">
+                            </div>
+                            
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                                <input type="email" id="email" 
+                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition">
+                            </div>
+                            
+                            <div>
+                                <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
+                                <input type="tel" id="phone" required 
+                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition">
+                            </div>
+                            
+                            <div>
+                                <label for="purpose" class="block text-sm font-medium text-gray-700 mb-1">Purpose of Visit *</label>
+                                <select id="purpose" required 
+                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition">
+                                    <option value="">Select purpose...</option>
+                                    <option value="Meeting">Meeting</option>
+                                    <option value="Delivery">Delivery</option>
+                                    <option value="Interview">Interview</option>
+                                    <option value="Client Visit">Client Visit</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label for="person" class="block text-sm font-medium text-gray-700 mb-1">Person to See *</label>
+                                <input type="text" id="person" required 
+                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition">
+                            </div>
+                            
+                            <button type="button" id="startCaptureBtn" 
+                                class="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 px-4 rounded-lg transition mt-2">
+                                <i class="fa fa-camera mr-2"></i> Capture Photo (optional)
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Face Capture Panel -->
+                    <div class="bg-white rounded-2xl p-6 md:p-8 card-shadow">
+                        <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
+                            <i class="fa fa-eye text-primary"></i> Face Capture
+                        </h3>
+                        
+                        <div id="cameraContainer" class="relative bg-gray-100 rounded-xl overflow-hidden mb-4 aspect-[4/3] flex items-center justify-center">
+                            <div id="cameraPlaceholder" class="text-center text-gray-500">
+                                <i class="fa fa-camera text-4xl mb-2"></i>
+                                <p>Photo is optional — click "Capture Photo" to start camera</p>
+                            </div>
+                            <video id="cameraFeed" class="w-full h-full object-cover hidden" autoplay playsinline muted></video>
+                            <canvas id="photoCanvas" class="hidden"></canvas>
+                        </div>
+                        
+                        <div id="capturedContainer" class="hidden mb-4">
+                            <p class="text-sm font-medium text-green-600 mb-2">
+                                <i class="fa fa-check-circle"></i> Photo captured (optional)
+                            </p>
+                            <img id="capturedPreview" class="w-full rounded-lg border-2 border-green-500 no-mirror" alt="Captured face">
+                        </div>
+                        
+                        <div class="flex gap-3 mt-4">
+                            <button id="captureBtn" disabled
+                                class="flex-1 bg-secondary hover:bg-secondary/90 text-white font-medium py-3 px-4 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed">
+                                <i class="fa fa-camera mr-2"></i> Take Snapshot
+                            </button>
+                            <button id="retakeBtn" class="hidden flex-1 bg-gray-600 hover:bg-gray-700 text-white font-medium py-3 px-4 rounded-lg transition">
+                                <i class="fa fa-refresh mr-2"></i> Retake
+                            </button>
+                        </div>
+                        
+                        <button id="submitBtn"
+                            class="w-full mt-6 bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed">
+                            <i class="fa fa-sign-in mr-2"></i> Complete Sign In
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Visitor Log Section -->
+    <section id="records" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4 md:px-6">
+            <h3 class="text-2xl font-bold mb-8 text-center">Visitor Log</h3>
+            
+            <div class="bg-white rounded-2xl p-6 card-shadow overflow-x-auto">
+                <div class="flex items-center justify-end gap-3 mb-4">
+                    <button id="exportCsvBtn" class="bg-primary text-white py-2 px-3 rounded disabled:opacity-50" disabled>Export CSV</button>
+                    <button id="exportPhotosBtn" class="bg-secondary text-white py-2 px-3 rounded disabled:opacity-50" disabled>Export Photos</button>
+                    <button id="clearAllBtn" class="bg-red-600 text-white py-2 px-3 rounded disabled:opacity-50" disabled>Clear All</button>
+                </div>
+                <table class="w-full min-w-[640px]">
+                    <thead>
+                        <tr class="border-b border-gray-200">
+                            <th class="text-left py-3 px-4 font-semibold text-gray-600">Photo</th>
+                            <th class="text-left py-3 px-4 font-semibold text-gray-600">Name</th>
+                            <th class="text-left py-3 px-4 font-semibold text-gray-600">Contact</th>
+                            <th class="text-left py-3 px-4 font-semibold text-gray-600">Purpose / To See</th>
+                            <th class="text-left py-3 px-4 font-semibold text-gray-600">Time In</th>
+                            <th class="text-left py-3 px-4 font-semibold text-gray-600">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recordsBody">
+                        <tr>
+                            <td colspan="6" class="py-8 text-center text-gray-500">
+                                <i class="fa fa-folder-open text-2xl mb-2"></i>
+                                <p>No visitor records yet.</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 text-center">
+            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fa fa-check text-2xl text-green-600"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2">Sign In Successful!</h3>
+            <p class="text-gray-600 mb-6">Thank you for visiting JustBrandIt. Your record has been saved.</p>
+            <button id="closeModalBtn" 
+                class="bg-primary hover:bg-primary/90 text-white font-medium py-2 px-6 rounded-lg transition">
+                Done
+            </button>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-2xl p-6 max-w-sm w-full mx-4">
+            <h3 class="text-lg font-bold mb-3">Admin Login</h3>
+            <div class="space-y-3">
+                <input id="adminEmail" type="email" placeholder="Email" class="w-full px-3 py-2 border rounded">
+                <input id="adminPassword" type="password" placeholder="Password" class="w-full px-3 py-2 border rounded">
+                <div class="flex gap-3 justify-end">
+                    <button id="loginCancelBtn" class="px-3 py-2 rounded bg-gray-200">Cancel</button>
+                    <button id="loginSubmitBtn" class="px-3 py-2 rounded bg-primary text-white">Login</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Setup Modal (shown if no admin configured) -->
+    <div id="adminSetupModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-2xl p-6 max-w-sm w-full mx-4">
+            <h3 class="text-lg font-bold mb-3">Create Admin Account</h3>
+            <div class="space-y-3">
+                <input id="setupEmail" type="email" placeholder="Admin Email" class="w-full px-3 py-2 border rounded">
+                <input id="setupPassword" type="password" placeholder="Password" class="w-full px-3 py-2 border rounded">
+                <div class="flex gap-3 justify-end">
+                    <button id="setupCancelBtn" class="px-3 py-2 rounded bg-gray-200">Cancel</button>
+                    <button id="setupSubmitBtn" class="px-3 py-2 rounded bg-primary text-white">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-8">
+        <div class="container mx-auto px-4 md:px-6 text-center">
+            <p>&copy; 2026 JustBrandIt. All rights reserved. Visitor Management System.</p>
+        </div>
+    </footer>
+
+    <!-- Load external script (app logic is in script.js) -->
+    <script src="script.js"></script>
+</body>
+</html>
