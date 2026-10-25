@@ -10,6 +10,13 @@ const capturedPreview = document.getElementById('capturedPreview');
 const capturedContainer = document.getElementById('capturedContainer');
 const submitBtn = document.getElementById('submitBtn');
 const recordsBody = document.getElementById('recordsBody');
+const visitorSearch = document.getElementById('visitorSearch');
+const purposeFilter = document.getElementById('purposeFilter');
+const personFilter = document.getElementById('personFilter');
+const statusFilter = document.getElementById('statusFilter');
+const dateFilter = document.getElementById('dateFilter');
+const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+const recordsCount = document.getElementById('recordsCount');
 const successModal = document.getElementById('successModal');
 const closeModalBtn = document.getElementById('closeModalBtn');
 const exportCsvBtn = document.getElementById('exportCsvBtn');
@@ -34,6 +41,26 @@ let visitors = JSON.parse(localStorage.getItem('justbranditVisitors') || '[]');
 let isAdminSession = !!sessionStorage.getItem('justbranditAdminSession');
 
 // === INITIALIZE ===
+const personSelect = document.getElementById('person');
+Array.from(personSelect.options)
+    .filter(option => option.value)
+    .forEach(option => {
+        personFilter.add(new Option(option.textContent, option.value));
+    });
+
+visitorSearch.addEventListener('input', renderRecords);
+[purposeFilter, personFilter, statusFilter, dateFilter].forEach(filter => {
+    filter.addEventListener('change', renderRecords);
+});
+resetFiltersBtn.addEventListener('click', () => {
+    visitorSearch.value = '';
+    purposeFilter.value = '';
+    personFilter.value = '';
+    statusFilter.value = '';
+    dateFilter.value = '';
+    renderRecords();
+});
+
 renderRecords();
 // Enable submit immediately — photo is optional
 submitBtn.disabled = false;
@@ -158,6 +185,7 @@ submitBtn.addEventListener('click', () => {
         return;
     }
     
+    const signedInAt = new Date();
     const visitor = {
         id: Date.now(),
         fullname,
@@ -166,10 +194,11 @@ submitBtn.addEventListener('click', () => {
         purpose,
         person,
         photo: capturedImageData || null, // could be data URL or remote URL
-        timeIn: new Date().toLocaleString('en-NG', { 
-            dateStyle: 'full', 
-            timeStyle: 'medium' 
+        timeIn: signedInAt.toLocaleString('en-NG', {
+            dateStyle: 'full',
+            timeStyle: 'medium'
         }),
+        timeInAt: signedInAt.toISOString(),
         timeOut: null
     };
     
@@ -468,10 +497,30 @@ clearAllBtn?.addEventListener('click', () => {
 
 // === RENDER VISITOR TABLE ===
 function renderRecords() {
+    const query = visitorSearch.value.trim().toLocaleLowerCase();
+    const filteredVisitors = visitors.filter(visitor => {
+        const searchableText = [
+            visitor.fullname,
+            visitor.phone,
+            visitor.email,
+            visitor.person
+        ].filter(Boolean).join(' ').toLocaleLowerCase();
+        const matchesSearch = !query || searchableText.includes(query);
+        const matchesPurpose = !purposeFilter.value || visitor.purpose === purposeFilter.value;
+        const matchesPerson = !personFilter.value || visitor.person === personFilter.value;
+        const matchesStatus = !statusFilter.value
+            || (statusFilter.value === 'active' ? !visitor.timeOut : !!visitor.timeOut);
+        const matchesDate = !dateFilter.value || getVisitorSignInDate(visitor) === dateFilter.value;
+
+        return matchesSearch && matchesPurpose && matchesPerson && matchesStatus && matchesDate;
+    });
+
+    recordsCount.textContent = `Showing ${filteredVisitors.length} of ${visitors.length} ${visitors.length === 1 ? 'visitor' : 'visitors'}`;
+
     if (visitors.length === 0) {
         recordsBody.innerHTML = `
             <tr>
-                <td colspan="6" class="py-8 text-center text-gray-500">
+                <td colspan="7" class="py-10 text-center text-gray-500">
                     <i class="fa fa-folder-open text-2xl mb-2"></i>
                     <p>No visitor records yet.</p>
                 </td>
@@ -479,36 +528,73 @@ function renderRecords() {
         `;
         return;
     }
-    recordsBody.innerHTML = visitors.map(v => `
-        <tr class="border-b border-gray-100 hover:bg-gray-50">
+    if (filteredVisitors.length === 0) {
+        recordsBody.innerHTML = `
+            <tr>
+                <td colspan="7" class="py-10 text-center text-gray-500">
+                    <i class="fa fa-search text-2xl mb-2" aria-hidden="true"></i>
+                    <p>No visitors match these filters.</p>
+                </td>
+            </tr>
+        `;
+        return;
+    }
+    recordsBody.innerHTML = filteredVisitors.map(v => `
+        <tr class="border-b border-gray-100 hover:bg-blue-50/40 transition-colors">
             <td class="py-3 px-4">
-                ${v.photo 
-                    ? `<img src="${v.photo}" alt="${escapeHtml(v.fullname)}" class="w-12 h-12 rounded-full object-cover no-mirror">`
-                    : `<div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-sm">No Photo</div>`
-                }
-            </td>
-            <td class="py-3 px-4 font-medium">${escapeHtml(v.fullname)}</td>
-            <td class="py-3 px-4 text-sm">
-                <div>${escapeHtml(v.phone)}</div>
-                ${v.email ? `<div class="text-gray-500 text-xs">${escapeHtml(v.email)}</div>` : ''}
+                <div class="flex items-center gap-3">
+                    ${v.photo
+                        ? `<img src="${escapeHtml(v.photo)}" alt="" class="w-10 h-10 rounded-full object-cover no-mirror shrink-0">`
+                        : `<div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 shrink-0"><i class="fa fa-user" aria-hidden="true"></i></div>`
+                    }
+                    <span class="font-semibold text-gray-800">${escapeHtml(v.fullname || '')}</span>
+                </div>
             </td>
             <td class="py-3 px-4 text-sm">
-                <div><span class="font-medium">${escapeHtml(v.purpose)}</span></div>
-                <div class="text-gray-500">For: ${escapeHtml(v.person)}</div>
-            </td>
-            <td class="py-3 px-4 text-sm">
-                <div class="text-green-600">${v.timeIn}</div>
-                ${v.timeOut ? `<div class="text-red-500 text-xs">Signed out: ${v.timeOut}</div>` : ''}
+                <div class="text-gray-800">${escapeHtml(v.phone || '')}</div>
+                ${v.email ? `<div class="text-gray-500 text-xs mt-1">${escapeHtml(v.email)}</div>` : '<div class="text-gray-400 text-xs mt-1">No email</div>'}
             </td>
             <td class="py-3 px-4">
+                <span class="inline-flex rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700">${escapeHtml(v.purpose || '')}</span>
+            </td>
+            <td class="py-3 px-4 text-sm font-medium text-gray-700">${escapeHtml(v.person || '')}</td>
+            <td class="py-3 px-4 text-sm text-gray-700 whitespace-nowrap">${escapeHtml(v.timeIn || '')}</td>
+            <td class="py-3 px-4 text-sm text-gray-700 whitespace-nowrap">${v.timeOut ? escapeHtml(v.timeOut) : '<span class="text-gray-400">—</span>'}</td>
+            <td class="py-3 px-4 whitespace-nowrap">
                 ${!v.timeOut ? `
-                    <button class="sign-out-btn text-sm bg-red-100 hover:bg-red-200 text-red-700 py-1 px-3 rounded transition" data-id="${v.id}">
-                        Sign Out
-                    </button>
-                ` : '<span class="text-gray-400 text-sm">Completed</span>'}
+                    <div class="flex flex-col items-start gap-2">
+                        <span class="inline-flex rounded-full bg-green-50 px-2.5 py-1 text-xs font-medium text-green-700">Signed in</span>
+                        <button class="sign-out-btn text-xs font-medium bg-red-50 hover:bg-red-100 text-red-700 py-1.5 px-3 rounded-lg transition" data-id="${escapeHtml(String(v.id))}">
+                            Sign Out
+                        </button>
+                    </div>
+                ` : '<span class="inline-flex rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600">Signed out</span>'}
             </td>
         </tr>
     `).join('');
+}
+
+function getVisitorSignInDate(visitor) {
+    if (visitor.timeInAt) {
+        const date = new Date(visitor.timeInAt);
+        if (!Number.isNaN(date.getTime())) {
+            return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+        }
+    }
+
+    const dateMatch = (visitor.timeIn || '').match(/\b(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})\b/);
+    if (!dateMatch) return '';
+
+    const month = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december']
+        .indexOf(dateMatch[2].toLowerCase());
+    if (month === -1) return '';
+
+    const day = Number(dateMatch[1]);
+    const year = Number(dateMatch[3]);
+    const date = new Date(year, month, day);
+    if (date.getFullYear() !== year || date.getMonth() !== month || date.getDate() !== day) return '';
+
+    return `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 }
 
 // === PREVENT XSS ATTACKS ===

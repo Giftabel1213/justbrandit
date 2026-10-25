@@ -126,8 +126,64 @@
                             
                             <div>
                                 <label for="person" class="block text-sm font-medium text-gray-700 mb-1">Person to See *</label>
-                                <input type="text" id="person" required 
+                                <select id="person" required
                                     class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition">
+                                    <option value="">Select a staff member...</option>
+                                    <option value="Durojaye Akinwande">Durojaye Akinwande</option>
+                                    <option value="Esther Royal-Akangbe">Esther Royal-Akangbe</option>
+                                    <option value="Deborah Meshack">Deborah Meshack</option>
+                                    <option value="Israel Amachukwu">Israel Amachukwu</option>
+                                    <option value="Elizabeth Okon">Elizabeth Okon</option>
+                                    <option value="Jenniffer Inonex- Mokwe">Jenniffer Inonex- Mokwe</option>
+                                    <option value="Emmanuel David">Emmanuel David</option>
+                                    <option value="Temitope Biobaku">Temitope Biobaku</option>
+                                    <option value="Omotolani Oladosun">Omotolani Oladosun</option>
+                                    <option value="David Agboola">David Agboola</option>
+                                    <option value="Abeje Morounranti Dosunmu">Abeje Morounranti Dosunmu</option>
+                                    <option value="Onyeka Eluwa">Onyeka Eluwa</option>
+                                    <option value="Kansudeen Abdulai">Kansudeen Abdulai</option>
+                                    <option value="Okoye Favour">Okoye Favour</option>
+                                    <option value="Udoh Promise">Udoh Promise</option>
+                                    <option value="Bankole Toyyibat">Bankole Toyyibat</option>
+                                    <option value="Patrick Dada">Patrick Dada</option>
+                                    <option value="Adeyanju Adeyemi">Adeyanju Adeyemi</option>
+                                    <option value="Otubanjo AbdulHameed">Otubanjo AbdulHameed</option>
+                                    <option value="Olamide Ajala">Olamide Ajala</option>
+                                    <option value="Ayomide Adeyemi">Ayomide Adeyemi</option>
+                                    <option value="Samuel Omayajowo">Samuel Omayajowo</option>
+                                    <option value="Munachimso Chikezie-Uwazie">Munachimso Chikezie-Uwazie</option>
+                                    <option value="Kareem Funke">Kareem Funke</option>
+                                    <option value="Tomiwa Arole">Tomiwa Arole</option>
+                                    <option value="Olamilekan Olayioye">Olamilekan Olayioye</option>
+                                    <option value="Abayomi Balogun">Abayomi Balogun</option>
+                                    <option value="Solomon Omotayo">Solomon Omotayo</option>
+                                    <option value="Abiodun Omotayo">Abiodun Omotayo</option>
+                                    <option value="Matanmi Samuel">Matanmi Samuel</option>
+                                    <option value="Mayen Eduok">Mayen Eduok</option>
+                                    <option value="Loveth Akomolafe">Loveth Akomolafe</option>
+                                    <option value="Ojotulumi Israel">Ojotulumi Israel</option>
+                                    <option value="Adeyinka Olamilekan">Adeyinka Olamilekan</option>
+                                    <option value="Ayinla Barakat">Ayinla Barakat</option>
+                                    <option value="Olubajo Joel">Olubajo Joel</option>
+                                    <option value="Michael Ebuka">Michael Ebuka</option>
+                                    <option value="Daniel Whejiepon">Daniel Whejiepon</option>
+                                    <option value="John Chinedu">John Chinedu</option>
+                                    <option value="Gift Abel">Gift Abel</option>
+                                    <option value="Kehinde Oluwapelumi">Kehinde Oluwapelumi</option>
+                                    <option value="John Erinosho">John Erinosho</option>
+                                    <option value="Akindele David">Akindele David</option>
+                                    <option value="Modupe Ipadeola">Modupe Ipadeola</option>
+                                    <option value="Israel Sonola">Israel Sonola</option>
+                                    <option value="Ayomide Bosoro">Ayomide Bosoro</option>
+                                    <option value="Oduwole Damilola">Oduwole Damilola</option>
+                                    <option value="Gift Francis">Gift Francis</option>
+                                    <option value="Ahmed Muraina">Ahmed Muraina</option>
+                                    <option value="Akintola Wakeel">Akintola Wakeel</option>
+                                    <option value="Jejelowo Oluwatobi">Jejelowo Oluwatobi</option>
+                                    <option value="Ishola Adewale">Ishola Adewale</option>
+                                    <option value="Unekwe Dominion">Unekwe Dominion</option>
+                                    <option value="Michael-Mary Ugokwe">Michael-Mary Ugokwe</option>
+                                </select>
                             </div>
                             
                             <button type="button" id="startCaptureBtn" 
@@ -182,34 +238,90 @@
     <!-- Visitor Log Section -->
     <section id="records" class="py-16 bg-gray-50">
         <div class="container mx-auto px-4 md:px-6">
-            <h3 class="text-2xl font-bold mb-8 text-center">Visitor Log</h3>
-            
-            <div class="bg-white rounded-2xl p-6 card-shadow overflow-x-auto">
-                <div class="flex items-center justify-end gap-3 mb-4">
-                    <button id="exportCsvBtn" class="bg-primary text-white py-2 px-3 rounded disabled:opacity-50" disabled>Export CSV</button>
-                    <button id="exportPhotosBtn" class="bg-secondary text-white py-2 px-3 rounded disabled:opacity-50" disabled>Export Photos</button>
-                    <button id="clearAllBtn" class="bg-red-600 text-white py-2 px-3 rounded disabled:opacity-50" disabled>Clear All</button>
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between mb-6">
+                    <div>
+                        <h3 class="text-2xl font-bold text-dark">Visitor Log</h3>
+                        <p class="text-sm text-gray-500 mt-1">Search and filter visitor sign-in and sign-out records.</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button id="exportCsvBtn" class="bg-primary hover:bg-primary/90 text-white py-2 px-3 rounded-lg disabled:opacity-50" disabled>Export CSV</button>
+                        <button id="exportPhotosBtn" class="bg-secondary hover:bg-secondary/90 text-white py-2 px-3 rounded-lg disabled:opacity-50" disabled>Export Photos</button>
+                        <button id="clearAllBtn" class="bg-red-600 hover:bg-red-700 text-white py-2 px-3 rounded-lg disabled:opacity-50" disabled>Clear All</button>
+                    </div>
                 </div>
-                <table class="w-full min-w-[640px]">
-                    <thead>
-                        <tr class="border-b border-gray-200">
-                            <th class="text-left py-3 px-4 font-semibold text-gray-600">Photo</th>
-                            <th class="text-left py-3 px-4 font-semibold text-gray-600">Name</th>
-                            <th class="text-left py-3 px-4 font-semibold text-gray-600">Contact</th>
-                            <th class="text-left py-3 px-4 font-semibold text-gray-600">Purpose / To See</th>
-                            <th class="text-left py-3 px-4 font-semibold text-gray-600">Time In</th>
-                            <th class="text-left py-3 px-4 font-semibold text-gray-600">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="recordsBody">
-                        <tr>
-                            <td colspan="6" class="py-8 text-center text-gray-500">
-                                <i class="fa fa-folder-open text-2xl mb-2"></i>
-                                <p>No visitor records yet.</p>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+
+                <div class="bg-white rounded-2xl p-5 md:p-6 card-shadow">
+                    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-5 mb-5">
+                        <div class="lg:col-span-2">
+                            <label for="visitorSearch" class="block text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1">Search visitors</label>
+                            <input id="visitorSearch" type="search" placeholder="Name, phone, email, or person to see"
+                                class="w-full px-3 py-2.5 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                        </div>
+                        <div>
+                            <label for="purposeFilter" class="block text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1">Purpose</label>
+                            <select id="purposeFilter" class="w-full px-3 py-2.5 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                                <option value="">All purposes</option>
+                                <option value="Meeting">Meeting</option>
+                                <option value="Delivery">Delivery</option>
+                                <option value="Interview">Interview</option>
+                                <option value="Client Visit">Client Visit</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="personFilter" class="block text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1">Person to see</label>
+                            <select id="personFilter" class="w-full px-3 py-2.5 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                                <option value="">All staff</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="statusFilter" class="block text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1">Visit status</label>
+                            <select id="statusFilter" class="w-full px-3 py-2.5 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                                <option value="">All statuses</option>
+                                <option value="active">Signed in</option>
+                                <option value="completed">Signed out</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="dateFilter" class="block text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1">Sign-in date</label>
+                            <input id="dateFilter" type="date"
+                                class="w-full px-3 py-2.5 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary">
+                        </div>
+                        <div class="flex items-end">
+                            <button id="resetFiltersBtn" type="button" class="px-3 py-2.5 text-sm font-medium text-gray-600 hover:text-primary transition">
+                                <i class="fa fa-undo mr-1" aria-hidden="true"></i> Clear filters
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between border-t border-gray-100 pt-4 mb-2">
+                        <p id="recordsCount" class="text-sm text-gray-500" aria-live="polite"></p>
+                        <span class="text-xs text-gray-400">Newest visits first</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full min-w-[1050px] text-left">
+                            <thead>
+                                <tr class="border-y border-gray-200 bg-gray-50">
+                                    <th scope="col" class="py-3 px-4 text-xs font-semibold uppercase tracking-wide text-gray-500">Visitor</th>
+                                    <th scope="col" class="py-3 px-4 text-xs font-semibold uppercase tracking-wide text-gray-500">Contact</th>
+                                    <th scope="col" class="py-3 px-4 text-xs font-semibold uppercase tracking-wide text-gray-500">Purpose</th>
+                                    <th scope="col" class="py-3 px-4 text-xs font-semibold uppercase tracking-wide text-gray-500">Person to see</th>
+                                    <th scope="col" class="py-3 px-4 text-xs font-semibold uppercase tracking-wide text-gray-500">Time in</th>
+                                    <th scope="col" class="py-3 px-4 text-xs font-semibold uppercase tracking-wide text-gray-500">Time out</th>
+                                    <th scope="col" class="py-3 px-4 text-xs font-semibold uppercase tracking-wide text-gray-500">Status / action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recordsBody">
+                                <tr>
+                                    <td colspan="7" class="py-10 text-center text-gray-500">
+                                        <i class="fa fa-folder-open text-2xl mb-2" aria-hidden="true"></i>
+                                        <p>No visitor records yet.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
