@@ -503,6 +503,7 @@ function renderRecords() {
             visitor.fullname,
             visitor.phone,
             visitor.email,
+            visitor.purpose,
             visitor.person
         ].filter(Boolean).join(' ').toLocaleLowerCase();
         const matchesSearch = !query || searchableText.includes(query);
